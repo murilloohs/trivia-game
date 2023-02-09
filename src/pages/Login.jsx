@@ -23,6 +23,7 @@ export default class Login extends Component {
   render() {
     const { name, email } = this.state;
     const { handleChange, handleClick } = this;
+    const { history } = this.props;
 
     return (
       <div>
@@ -48,6 +49,13 @@ export default class Login extends Component {
             onClick={ handleClick }
           >
             Play
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/config') }
+          >
+            Configurações
           </button>
         </form>
       </div>
