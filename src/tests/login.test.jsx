@@ -51,8 +51,8 @@ describe('Cobertura da tela de Login', () => {
 
         await waitFor(() => {
             const { location: { pathname } } = history;
-            expect(localStorage.hasOwnProperty('token')).toBeTruthy();
             expect(pathname).toBe('/game');
+            expect(localStorage.hasOwnProperty('token')).toBeTruthy();
         });
     })
 });
