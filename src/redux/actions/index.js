@@ -7,6 +7,14 @@ import
 }
   from './actionTypes';
 
+export const ADD_DATA_USER = 'ADD_DATA_USER';
+
+export const addNameEmail = (email, name) => ({
+  type: ADD_DATA_USER,
+  email,
+  name,
+});
+
 const requestStarded = () => ({
   type: REQUEST_STARTED,
 });
@@ -32,3 +40,4 @@ export const requestTriviaAPI = () => async (dispatch) => {
     console.log(error);
   }
 };
+

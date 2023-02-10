@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { requestTriviaAPI } from '../redux/actions';
+import Header from './Header';
 
 class Game extends Component {
   state = {
@@ -38,7 +39,7 @@ class Game extends Component {
       this.setState({ data: data.results }, () => this.questions());
     }
   };
-
+  
   render() {
     const { response, nextQuestion } = this.props;
     const { allQuestions } = this.state;
@@ -47,7 +48,9 @@ class Game extends Component {
     return (
       <div>
         <h1>TRIVIA</h1>
-
+          <section>
+            <Header />
+          </section>
         {
           response.length > 0
             ? (
@@ -75,7 +78,6 @@ class Game extends Component {
             )
             : (<p>carregando...</p>)
         }
-
       </div>
     );
   }
