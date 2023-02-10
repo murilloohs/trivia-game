@@ -1,29 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { questionsAll, requestTriviaAPI } from '../redux/actions';
+import { requestTriviaAPI } from '../redux/actions';
 import Header from './Header';
 import '../App.css';
 
 class Game extends Component {
   state = {
-    // allQuestions: [],
-    // data: [],
     colorCorret: false,
   };
 
   componentDidMount() {
     this.getQuestions();
   }
-
-  // questions = () => {
-  //   const { nextQuestion } = this.props;
-  //   const { data } = this.state;
-  //   this.setState({
-  //     allQuestions: [data[nextQuestion].correct_answer,
-  //       ...data[nextQuestion].incorrect_answers,
-  //     ] });
-  // };
 
   getQuestions = () => {
     const { dispatch, history } = this.props;
@@ -103,10 +92,13 @@ const mapStateToProps = ({ trivia: { response, nextQuestion, allQuestions } }) =
 export default connect(mapStateToProps)(Game);
 
 Game.propTypes = {
+  allQuestions: PropTypes.shape({
+    sort: PropTypes.func.isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
   nextQuestion: PropTypes.number.isRequired,
   response: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string.isRequired,
