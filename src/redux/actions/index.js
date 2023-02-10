@@ -28,14 +28,24 @@ export const nextQuestion = () => ({
   type: NEXT_QUESTION,
 });
 
-export const requestTriviaAPI = () => async (dispatch) => {
+export const questionsAll = () => ({
+  type: 'All_QUESTIONS',
+}
+);
+export const requestTriviaAPI = (history) => async (dispatch) => {
   try {
     dispatch(requestStarded());
+    const responseErro = 3;
     const token = await fetchToken();
     const url = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const request = await fetch(url);
     const data = await request.json();
+    if (data.response_code === responseErro) {
+      localStorage.clear('token');
+      history.push('/');
+    }
     dispatch(requestSucess(data));
+    return data;
   } catch (error) {
     console.log(error);
   }

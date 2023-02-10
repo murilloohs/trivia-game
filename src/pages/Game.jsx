@@ -1,49 +1,49 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { requestTriviaAPI } from '../redux/actions';
+import { questionsAll, requestTriviaAPI } from '../redux/actions';
 import Header from './Header';
+import '../App.css';
 
 class Game extends Component {
   state = {
-    allQuestions: [],
-    data: [],
+    // allQuestions: [],
+    // data: [],
+    colorCorret: false,
   };
 
   componentDidMount() {
     this.getQuestions();
   }
 
-  questions = () => {
-    const { nextQuestion } = this.props;
-    const { data } = this.state;
-    this.setState({
-      allQuestions: [data[nextQuestion].correct_answer,
-        ...data[nextQuestion].incorrect_answers,
-      ] });
+  // questions = () => {
+  //   const { nextQuestion } = this.props;
+  //   const { data } = this.state;
+  //   this.setState({
+  //     allQuestions: [data[nextQuestion].correct_answer,
+  //       ...data[nextQuestion].incorrect_answers,
+  //     ] });
+  // };
+
+  getQuestions = () => {
+    const { dispatch, history } = this.props;
+    dispatch(requestTriviaAPI(history));
   };
 
-  getQuestions = async () => {
-    const request = localStorage.getItem('token');
-    const url = `https://opentdb.com/api.php?amount=5&token=${request}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const responseErro = 3;
-    if (data.response_code === responseErro) {
-      localStorage.clear('token');
-      const { history } = this.props;
-      history.push('/');
-    } else {
-      const { dispatch } = this.props;
-      dispatch(requestTriviaAPI());
-      this.setState({ data: data.results }, () => this.questions());
-    }
+  handleColor = ({ target }) => {
+    const { response, nextQuestion } = this.props;
+
+    console.log('red');
+    this.setState({ colorCorret: true });
+    console.log(target.value);
+    console.log(response[nextQuestion].correct_answer);
   };
 
   render() {
-    const { response, nextQuestion } = this.props;
-    const { allQuestions } = this.state;
+    const { response, nextQuestion, allQuestions } = this.props;
+    const { colorCorret } = this.state;
     const numberSorted = 0.5;
+    let color;
 
     return (
       <div>
@@ -60,17 +60,28 @@ class Game extends Component {
                 <div>
                   <div data-testid="answer-options">
                     {allQuestions.sort(() => Math.random() - numberSorted)
-                      .map((question, index) => (
-                        <button
-                          key={ question }
-                          data-testid={
-                            question === response[nextQuestion].correct_answer
-                              ? 'correct-answer' : `wrong-answer-${index}`
-                          }
-                        >
-                          {question}
-                        </button>
-                      ))}
+                      .map((question, index) => {
+                        const verifyColor = response[nextQuestion]
+                          .correct_answer === question
+                          ? 'correntColor' : 'incorretColor';
+                        console.log(verifyColor);
+                        return (
+
+                          <button
+                            onClick={ this.handleColor }
+                            value={ question }
+                            key={ question }
+                            className={ colorCorret === true ? verifyColor : '' }
+                            style={ { border: `3px solid ${color}` } }
+                            data-testid={
+                              question === response[nextQuestion].correct_answer
+                                ? 'correct-answer' : `wrong-answer-${index}`
+                            }
+                          >
+                            {question}
+                          </button>
+                        );
+                      })}
                   </div>
                 </div>
 
@@ -83,9 +94,10 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = ({ trivia: { response, nextQuestion } }) => ({
+const mapStateToProps = ({ trivia: { response, nextQuestion, allQuestions } }) => ({
   response,
   nextQuestion,
+  allQuestions,
 });
 
 export default connect(mapStateToProps)(Game);
