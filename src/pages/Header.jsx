@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 class Header extends Component {
   render() {
-    const { nameUser, emailUser } = this.props;
+    const { nameUser, emailUser, score } = this.props;
 
     const hash = md5(emailUser).toString();
 
@@ -25,7 +25,9 @@ class Header extends Component {
           { nameUser }
         </div>
         <div data-testid="header-score">
-          Placar: 0
+          Placar:
+          {' '}
+          { score }
         </div>
       </section>
     );
@@ -35,11 +37,13 @@ class Header extends Component {
 const mapStateToProps = (store) => ({
   emailUser: store.loginReducer.loggedEmail,
   nameUser: store.loginReducer.loggedName,
+  score: store.player.score,
 });
 
 Header.propTypes = {
   nameUser: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
