@@ -39,7 +39,7 @@ class Game extends Component {
       this.setState({ data: data.results }, () => this.questions());
     }
   };
-  
+
   render() {
     const { response, nextQuestion } = this.props;
     const { allQuestions } = this.state;
@@ -48,9 +48,9 @@ class Game extends Component {
     return (
       <div>
         <h1>TRIVIA</h1>
-          <section>
-            <Header />
-          </section>
+        <section>
+          <Header />
+        </section>
         {
           response.length > 0
             ? (

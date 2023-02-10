@@ -1,7 +1,6 @@
 import {
   REQUEST_STARTED,
   REQUEST_SUCESS_API,
-  //   REQUEST_ERROR_API
   NEXT_QUESTION,
 }
   from '../actions/actionTypes';

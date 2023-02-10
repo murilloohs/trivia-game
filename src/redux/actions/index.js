@@ -2,19 +2,19 @@ import fetchToken from '../../service/service';
 import
 { REQUEST_STARTED,
   REQUEST_SUCESS_API,
-  // REQUEST_ERROR_API,
   NEXT_QUESTION,
+  ADD_DATA_USER,
 }
   from './actionTypes';
 
-export const ADD_DATA_USER = 'ADD_DATA_USER';
-
+// ACTION LOGIN
 export const addNameEmail = (email, name) => ({
   type: ADD_DATA_USER,
   email,
   name,
 });
 
+// ACTION API TRIVIA
 const requestStarded = () => ({
   type: REQUEST_STARTED,
 });
@@ -40,4 +40,3 @@ export const requestTriviaAPI = () => async (dispatch) => {
     console.log(error);
   }
 };
-
