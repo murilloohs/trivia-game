@@ -24,6 +24,14 @@ const triviaReducers = (state = INITIAL_STATE_TRIVIA, action) => {
         ...action.payload.results[state.nextQuestion].incorrect_answers,
       ],
     };
+  case 'ADD_NEXT_QUESTION':
+    return {
+      ...state,
+      nextQuestion: state.nextQuestion + 1,
+      allQuestions: [state.response[state.nextQuestion + 1].correct_answer,
+        ...state.response[state.nextQuestion + 1].incorrect_answers,
+      ],
+    };
   case NEXT_QUESTION:
     return {
       ...state,

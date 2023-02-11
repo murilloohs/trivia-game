@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { requestTriviaAPI } from '../redux/actions';
+import {
+  requestTriviaAPI, dispatchNextQuestion, addNextQuestion } from '../redux/actions/index';
 import Header from './Header';
 import '../App.css';
 
 class Game extends Component {
   state = {
-    colorCorret: false,
+    isColorCorrect: false,
+    isBtnNext: false,
   };
 
   componentDidMount() {
@@ -19,20 +21,21 @@ class Game extends Component {
     dispatch(requestTriviaAPI(history));
   };
 
-  handleColor = ({ target }) => {
-    const { response, nextQuestion } = this.props;
+  handleColor = () => {
+    this.setState({ isColorCorrect: true, isBtnNext: true });
+  };
 
-    console.log('red');
-    this.setState({ colorCorret: true });
-    console.log(target.value);
-    console.log(response[nextQuestion].correct_answer);
+  handleDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch(dispatchNextQuestion());
+    dispatch(addNextQuestion());
+    this.setState({ isColorCorrect: false });
   };
 
   render() {
     const { response, nextQuestion, allQuestions } = this.props;
-    const { colorCorret } = this.state;
+    const { isColorCorrect, isBtnNext } = this.state;
     const numberSorted = 0.5;
-    let color;
 
     return (
       <div>
@@ -52,16 +55,14 @@ class Game extends Component {
                       .map((question, index) => {
                         const verifyColor = response[nextQuestion]
                           .correct_answer === question
-                          ? 'correntColor' : 'incorretColor';
-                        console.log(verifyColor);
+                          ? 'correctColor' : 'incorrectColor';
                         return (
 
                           <button
                             onClick={ this.handleColor }
                             value={ question }
                             key={ question }
-                            className={ colorCorret === true ? verifyColor : '' }
-                            style={ { border: `3px solid ${color}` } }
+                            className={ isColorCorrect === true ? verifyColor : '' }
                             data-testid={
                               question === response[nextQuestion].correct_answer
                                 ? 'correct-answer' : `wrong-answer-${index}`
@@ -71,6 +72,17 @@ class Game extends Component {
                           </button>
                         );
                       })}
+                    {
+                      isBtnNext
+                      && (
+                        <button
+                          data-testid="btn-next"
+                          onClick={ this.handleDispatch }
+                        >
+                          Next
+                        </button>
+                      )
+                    }
                   </div>
                 </div>
 

@@ -62,10 +62,10 @@ body {
   }
 }
 
-.correntColor {
+.correctColor {
   border: 3px solid rgb(6, 240, 15);
 }
 
-.incorretColor {
+.incorrectColor {
   border: 3px solid red;
 }

@@ -24,8 +24,12 @@ const requestSucess = (payload) => ({
   payload,
 });
 
-export const nextQuestion = () => ({
+export const dispatchNextQuestion = () => ({
   type: NEXT_QUESTION,
+});
+
+export const addNextQuestion = () => ({
+  type: 'ADD_NEXT_QUESTION',
 });
 
 export const questionsAll = () => ({
