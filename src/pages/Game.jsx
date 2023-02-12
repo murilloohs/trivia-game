@@ -2,19 +2,22 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  requestTriviaAPI, dispatchNextQuestion, addNextQuestion  actionScore} from '../redux/actions/index';
+  requestTriviaAPI,
+  dispatchNextQuestion,
+  addNextQuestion,
+  actionScore,
+} from '../redux/actions';
 
 import Header from './Header';
 import '../App.css';
 
 const timer = 1000;
+const CORRECT_ANSWER = 'correct-answer';
 
 class Game extends Component {
   state = {
     isColorCorrect: false,
     isBtnNext: false,
-    allQuestions: [],
-    data: [],
     seconds: 30,
     isDisabled: false,
     rightAnswers: 0,
@@ -38,7 +41,8 @@ class Game extends Component {
     const { dispatch } = this.props;
     dispatch(dispatchNextQuestion());
     dispatch(addNextQuestion());
-    this.setState({ isColorCorrect: false });
+    this.setState({ isColorCorrect: false, seconds: 30, isDisabled: false });
+    this.timerFunction();
   };
 
   timerFunction = () => {
@@ -60,10 +64,8 @@ class Game extends Component {
   };
 
   handleClick = ({ target }) => {
-    const { dispatch } = this.props;
-    const { data, seconds } = this.state;
-
-    const CORRECT_ANSWER = 'correct-answer';
+    const { dispatch, response } = this.props;
+    const { seconds } = this.state;
     this.handleColor();
 
     if (target.id === CORRECT_ANSWER) {
@@ -73,9 +75,9 @@ class Game extends Component {
 
       let diff = 0;
 
-      if (data.difficulty === 'easy') {
+      if (response.difficulty === 'easy') {
         diff = 1;
-      } else if (data.difficulty === 'medium') {
+      } else if (response.difficulty === 'medium') {
         diff = 2;
       } else {
         const diffNumber = 3;
@@ -89,9 +91,8 @@ class Game extends Component {
 
   render() {
     const { response, nextQuestion, allQuestions } = this.props;
-    const { isColorCorrect, isBtnNext, isDisabled, seconds  } = this.state;
+    const { isColorCorrect, isBtnNext, isDisabled, seconds } = this.state;
     const numberSorted = 0.5;
-    const CORRECT_ANSWER = 'correct-answer';
 
     return (
       <div>
@@ -117,12 +118,17 @@ class Game extends Component {
 
                           <button
                             onClick={ this.handleClick }
+                            id={
+                              question === response[nextQuestion].correct_answer
+                                ? CORRECT_ANSWER : `wrong-answer-${index}`
+                            }
+                            disabled={ isDisabled }
                             value={ question }
                             key={ question }
                             className={ isColorCorrect === true ? verifyColor : '' }
                             data-testid={
                               question === response[nextQuestion].correct_answer
-                                ? 'correct-answer' : `wrong-answer-${index}`
+                                ? CORRECT_ANSWER : `wrong-answer-${index}`
                             }
                           >
                             {question}
