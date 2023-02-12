@@ -8,6 +8,7 @@ import {
 const INITIAL_STATE_TRIVIA = {
   response: [],
   nextQuestion: 0,
+  allQuestions: [],
 };
 const triviaReducers = (state = INITIAL_STATE_TRIVIA, action) => {
   switch (action.type) {
@@ -19,6 +20,17 @@ const triviaReducers = (state = INITIAL_STATE_TRIVIA, action) => {
     return {
       ...state,
       response: action.payload.results,
+      allQuestions: [action.payload.results[state.nextQuestion].correct_answer,
+        ...action.payload.results[state.nextQuestion].incorrect_answers,
+      ],
+    };
+  case 'ADD_NEXT_QUESTION':
+    return {
+      ...state,
+      nextQuestion: state.nextQuestion + 1,
+      allQuestions: [state.response[state.nextQuestion + 1].correct_answer,
+        ...state.response[state.nextQuestion + 1].incorrect_answers,
+      ],
     };
   case NEXT_QUESTION:
     return {

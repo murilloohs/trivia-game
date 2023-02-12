@@ -1,15 +1,23 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actionScore, requestTriviaAPI } from '../redux/actions';
+import {
+  requestTriviaAPI,
+  dispatchNextQuestion,
+  addNextQuestion,
+  actionScore,
+} from '../redux/actions';
+
 import Header from './Header';
+import '../App.css';
 
 const timer = 1000;
+const CORRECT_ANSWER = 'correct-answer';
 
 class Game extends Component {
   state = {
-    allQuestions: [],
-    data: [],
+    isColorCorrect: false,
+    isBtnNext: false,
     seconds: 30,
     isDisabled: false,
     rightAnswers: 0,
@@ -20,30 +28,21 @@ class Game extends Component {
     this.timerFunction();
   }
 
-  questions = () => {
-    const { nextQuestion } = this.props;
-    const { data } = this.state;
-    this.setState({
-      allQuestions: [data[nextQuestion].correct_answer,
-        ...data[nextQuestion].incorrect_answers,
-      ] });
+  getQuestions = () => {
+    const { dispatch, history } = this.props;
+    dispatch(requestTriviaAPI(history));
   };
 
-  getQuestions = async () => {
-    const request = localStorage.getItem('token');
-    const url = `https://opentdb.com/api.php?amount=5&token=${request}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const responseErro = 3;
-    if (data.response_code === responseErro) {
-      localStorage.clear('token');
-      const { history } = this.props;
-      history.push('/');
-    } else {
-      const { dispatch } = this.props;
-      dispatch(requestTriviaAPI());
-      this.setState({ data: data.results }, () => this.questions());
-    }
+  handleColor = () => {
+    this.setState({ isColorCorrect: true, isBtnNext: true });
+  };
+
+  handleDispatch = () => {
+    const { dispatch } = this.props;
+    dispatch(dispatchNextQuestion());
+    dispatch(addNextQuestion());
+    this.setState({ isColorCorrect: false, seconds: 30, isDisabled: false });
+    this.timerFunction();
   };
 
   timerFunction = () => {
@@ -65,10 +64,9 @@ class Game extends Component {
   };
 
   handleClick = ({ target }) => {
-    const { dispatch } = this.props;
-    const { data, seconds } = this.state;
-
-    const CORRECT_ANSWER = 'correct-answer';
+    const { dispatch, response } = this.props;
+    const { seconds } = this.state;
+    this.handleColor();
 
     if (target.id === CORRECT_ANSWER) {
       this.setState((prevState) => ({
@@ -77,9 +75,9 @@ class Game extends Component {
 
       let diff = 0;
 
-      if (data.difficulty === 'easy') {
+      if (response.difficulty === 'easy') {
         diff = 1;
-      } else if (data.difficulty === 'medium') {
+      } else if (response.difficulty === 'medium') {
         diff = 2;
       } else {
         const diffNumber = 3;
@@ -92,11 +90,9 @@ class Game extends Component {
   };
 
   render() {
-    const { response, nextQuestion } = this.props;
-    const { allQuestions, isDisabled, seconds } = this.state;
-
+    const { response, nextQuestion, allQuestions } = this.props;
+    const { isColorCorrect, isBtnNext, isDisabled, seconds } = this.state;
     const numberSorted = 0.5;
-    const CORRECT_ANSWER = 'correct-answer';
 
     return (
       <div>
@@ -114,24 +110,42 @@ class Game extends Component {
                 <div>
                   <div data-testid="answer-options">
                     {allQuestions.sort(() => Math.random() - numberSorted)
-                      .map((question, index) => (
+                      .map((question, index) => {
+                        const verifyColor = response[nextQuestion]
+                          .correct_answer === question
+                          ? 'correctColor' : 'incorrectColor';
+                        return (
+
+                          <button
+                            onClick={ this.handleClick }
+                            id={
+                              question === response[nextQuestion].correct_answer
+                                ? CORRECT_ANSWER : `wrong-answer-${index}`
+                            }
+                            disabled={ isDisabled }
+                            value={ question }
+                            key={ question }
+                            className={ isColorCorrect === true ? verifyColor : '' }
+                            data-testid={
+                              question === response[nextQuestion].correct_answer
+                                ? CORRECT_ANSWER : `wrong-answer-${index}`
+                            }
+                          >
+                            {question}
+                          </button>
+                        );
+                      })}
+                    {
+                      isBtnNext
+                      && (
                         <button
-                          key={ question }
-                          type="button"
-                          id={
-                            question === response[nextQuestion].correct_answer
-                              ? CORRECT_ANSWER : `wrong-answer-${index}`
-                          }
-                          data-testid={
-                            question === response[nextQuestion].correct_answer
-                              ? CORRECT_ANSWER : `wrong-answer-${index}`
-                          }
-                          disabled={ isDisabled }
-                          onClick={ this.handleClick }
+                          data-testid="btn-next"
+                          onClick={ this.handleDispatch }
                         >
-                          {question}
+                          Next
                         </button>
-                      ))}
+                      )
+                    }
                   </div>
                 </div>
 
@@ -144,16 +158,20 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = ({ trivia: { response, nextQuestion } }) => ({
+const mapStateToProps = ({ trivia: { response, nextQuestion, allQuestions } }) => ({
   response,
   nextQuestion,
+  allQuestions,
 });
 
 Game.propTypes = {
+  allQuestions: PropTypes.shape({
+    sort: PropTypes.func.isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
   nextQuestion: PropTypes.number.isRequired,
   response: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string.isRequired,
