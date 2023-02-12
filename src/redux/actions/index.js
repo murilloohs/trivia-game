@@ -4,6 +4,7 @@ import
   REQUEST_SUCESS_API,
   NEXT_QUESTION,
   ADD_DATA_USER,
+  ACTION_SCORE,
 }
   from './actionTypes';
 
@@ -54,3 +55,9 @@ export const requestTriviaAPI = (history) => async (dispatch) => {
     console.log(error);
   }
 };
+
+// ACTION PONTUAÇÃO
+export const actionScore = (payload) => ({
+  type: ACTION_SCORE,
+  payload,
+});
