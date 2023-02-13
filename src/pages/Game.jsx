@@ -15,18 +15,37 @@ const timer = 1000;
 const CORRECT_ANSWER = 'correct-answer';
 
 class Game extends Component {
-  state = {
-    isColorCorrect: false,
-    isBtnNext: false,
-    seconds: 30,
-    isDisabled: false,
-    rightAnswers: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isColorCorrect: false,
+      isBtnNext: false,
+      seconds: 30,
+      isDisabled: false,
+      rightAnswers: 0,
+      questions: [],
+    };
+    this.myInterval = 0;
+  }
 
   componentDidMount() {
     this.getQuestions();
     this.timerFunction();
   }
+
+  componentDidUpdate(prevProps) {
+    const { allQuestions } = this.props;
+    if (prevProps.allQuestions !== allQuestions) {
+      this.questionsSorted();
+    }
+  }
+
+  questionsSorted = () => {
+    const { allQuestions } = this.props;
+    const numberSorted = 0.5;
+    const array = allQuestions.sort(() => Math.random() - numberSorted);
+    this.setState({ questions: array });
+  };
 
   getQuestions = () => {
     const { dispatch, history } = this.props;
@@ -43,11 +62,12 @@ class Game extends Component {
     dispatch(addNextQuestion());
     this.setState({ isColorCorrect: false, seconds: 30, isDisabled: false });
     this.timerFunction();
+    clearInterval(this.myInterval);
   };
 
   timerFunction = () => {
     const { dispatch } = this.props;
-    const myInterval = setInterval(() => {
+    this.myInterval = setInterval(() => {
       const { seconds } = this.state;
       if (seconds > 0) {
         this.setState((prevState) => ({
@@ -90,9 +110,8 @@ class Game extends Component {
   };
 
   render() {
-    const { response, nextQuestion, allQuestions } = this.props;
-    const { isColorCorrect, isBtnNext, isDisabled, seconds } = this.state;
-    const numberSorted = 0.5;
+    const { response, nextQuestion } = this.props;
+    const { isColorCorrect, isBtnNext, isDisabled, seconds, questions } = this.state;
 
     return (
       <div>
@@ -109,32 +128,31 @@ class Game extends Component {
                 <p>{ seconds }</p>
                 <div>
                   <div data-testid="answer-options">
-                    {allQuestions.sort(() => Math.random() - numberSorted)
-                      .map((question, index) => {
-                        const verifyColor = response[nextQuestion]
-                          .correct_answer === question
-                          ? 'correctColor' : 'incorrectColor';
-                        return (
+                    {questions.map((question, index) => {
+                      const verifyColor = response[nextQuestion]
+                        .correct_answer === question
+                        ? 'correctColor' : 'incorrectColor';
+                      return (
 
-                          <button
-                            onClick={ this.handleClick }
-                            id={
-                              question === response[nextQuestion].correct_answer
-                                ? CORRECT_ANSWER : `wrong-answer-${index}`
-                            }
-                            disabled={ isDisabled }
-                            value={ question }
-                            key={ question }
-                            className={ isColorCorrect === true ? verifyColor : '' }
-                            data-testid={
-                              question === response[nextQuestion].correct_answer
-                                ? CORRECT_ANSWER : `wrong-answer-${index}`
-                            }
-                          >
-                            {question}
-                          </button>
-                        );
-                      })}
+                        <button
+                          onClick={ this.handleClick }
+                          id={
+                            question === response[nextQuestion].correct_answer
+                              ? CORRECT_ANSWER : `wrong-answer-${index}`
+                          }
+                          disabled={ isDisabled }
+                          value={ question }
+                          key={ question }
+                          className={ isColorCorrect === true ? verifyColor : '' }
+                          data-testid={
+                            question === response[nextQuestion].correct_answer
+                              ? CORRECT_ANSWER : `wrong-answer-${index}`
+                          }
+                        >
+                          {question}
+                        </button>
+                      );
+                    })}
                     {
                       isBtnNext
                       && (
