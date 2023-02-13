@@ -5,6 +5,7 @@ import
   NEXT_QUESTION,
   ADD_DATA_USER,
   ACTION_SCORE,
+  ACTION_ASSERTIONS,
 }
   from './actionTypes';
 
@@ -59,5 +60,11 @@ export const requestTriviaAPI = (history) => async (dispatch) => {
 // ACTION PONTUAÇÃO
 export const actionScore = (payload) => ({
   type: ACTION_SCORE,
+  payload,
+});
+
+// ACTION ASSERTIONS
+export const actionAssertions = (payload) => ({
+  type: ACTION_ASSERTIONS,
   payload,
 });

@@ -25,8 +25,6 @@ class Header extends Component {
           { nameUser }
         </div>
         <div data-testid="header-score">
-          Placar:
-          {' '}
           { score }
         </div>
       </section>

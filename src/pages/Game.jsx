@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import {
   requestTriviaAPI,
   dispatchNextQuestion,
   addNextQuestion,
   actionScore,
+  actionAssertions,
 } from '../redux/actions';
 
 import Header from './Header';
@@ -23,10 +25,13 @@ class Game extends Component {
       seconds: 30,
       isDisabled: false,
       rightAnswers: 0,
+      countQuestions: 0,
+      
       questions: [],
     };
     this.myInterval = 0;
   }
+
 
   componentDidMount() {
     this.getQuestions();
@@ -58,9 +63,17 @@ class Game extends Component {
 
   handleDispatch = () => {
     const { dispatch } = this.props;
+    const { rightAnswers } = this.state;
     dispatch(dispatchNextQuestion());
     dispatch(addNextQuestion());
-    this.setState({ isColorCorrect: false, seconds: 30, isDisabled: false });
+    dispatch(actionAssertions(rightAnswers));
+
+    // oldState refere-se aos valores atuais dos estados, passado como parâmetro para atualizar no countQuestions
+    this.setState((oldState) => ({ isColorCorrect: false,
+      seconds: 30,
+      isDisabled: false,
+      countQuestions: oldState.countQuestions + 1 }
+    ));
     this.timerFunction();
     clearInterval(this.myInterval);
   };
@@ -110,9 +123,18 @@ class Game extends Component {
   };
 
   render() {
-    const { response, nextQuestion } = this.props;
-    const { isColorCorrect, isBtnNext, isDisabled, seconds, questions } = this.state;
 
+    const { response, nextQuestion } = this.props;
+    const { isColorCorrect, isBtnNext, isDisabled, seconds, questions, countQuestions } = this.state;
+    
+
+
+    const numberOfQuestions = 5;
+    if (countQuestions === numberOfQuestions) {
+      return (
+        <Redirect to="/feedback" />
+      );
+    }
     return (
       <div>
         <h1>TRIVIA</h1>
