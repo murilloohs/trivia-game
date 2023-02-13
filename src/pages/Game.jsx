@@ -77,7 +77,7 @@ class Game extends Component {
         this.setState({
           isDisabled: true,
         });
-        clearInterval(myInterval);
+        clearInterval(this.myInterval);
         dispatch(actionScore(0));
       }
     }, timer);
