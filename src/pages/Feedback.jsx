@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 
 class Feedback extends Component {
+  redirectInitialPage = () => {
+    const { history: { push } } = this.props;
+    push('/');
+  };
+
   render() {
     const { score, assertions } = this.props;
     const limit = 3;
@@ -26,6 +31,14 @@ class Feedback extends Component {
         <div data-testid="feedback-total-question">
           { assertions }
         </div>
+        <section>
+          <button
+            data-testid="btn-play-again"
+            onClick={ this.redirectInitialPage }
+          >
+            Play Again
+          </button>
+        </section>
       </div>
     );
   }
@@ -39,6 +52,9 @@ const mapStateToProps = (store) => ({
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
