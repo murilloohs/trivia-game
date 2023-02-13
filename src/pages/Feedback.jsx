@@ -6,13 +6,20 @@ import Header from './Header';
 class Feedback extends Component {
   render() {
     const { score, assertions } = this.props;
+    const limit = 3;
 
     return (
       <div>
         <section>
           <Header />
         </section>
-        <div data-testid="feedback-text" />
+        <p
+          data-testid="feedback-text"
+        >
+          {(assertions >= limit)
+            ? 'Well Done!' : 'Could be better...'}
+
+        </p>
         <div data-testid="feedback-total-score">
           { score }
         </div>
