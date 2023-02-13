@@ -8,6 +8,7 @@ import {
   addNextQuestion,
   actionScore,
   actionAssertions,
+  resetScore,
 } from '../redux/actions';
 
 import Header from './Header';
@@ -33,8 +34,10 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props;
     this.getQuestions();
     this.timerFunction();
+    dispatch(resetScore());
   }
 
   componentDidUpdate(prevProps) {

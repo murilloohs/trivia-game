@@ -17,6 +17,11 @@ const player = (state = INITIAL_STATE, action) => {
       ...state,
       assertions: action.payload,
     };
+  case 'RESET':
+    return {
+      ...state,
+      score: 0,
+    };
   default:
     return state;
   }

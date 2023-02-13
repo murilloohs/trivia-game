@@ -38,6 +38,11 @@ export const questionsAll = () => ({
   type: 'All_QUESTIONS',
 }
 );
+
+export const resetScore = () => ({
+  type: 'RESET',
+});
+
 export const requestTriviaAPI = (history) => async (dispatch) => {
   try {
     dispatch(requestStarded());
