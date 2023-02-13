@@ -15,7 +15,7 @@ const player = (state = INITIAL_STATE, action) => {
   case ACTION_ASSERTIONS:
     return {
       ...state,
-      assertions: state.assertions + action.payload,
+      assertions: action.payload,
     };
   default:
     return state;
