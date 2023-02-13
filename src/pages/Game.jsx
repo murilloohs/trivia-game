@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import {
   requestTriviaAPI,
   dispatchNextQuestion,
@@ -21,6 +22,7 @@ class Game extends Component {
     seconds: 30,
     isDisabled: false,
     rightAnswers: 0,
+    countQuestions: 0,
   };
 
   componentDidMount() {
@@ -41,7 +43,13 @@ class Game extends Component {
     const { dispatch } = this.props;
     dispatch(dispatchNextQuestion());
     dispatch(addNextQuestion());
-    this.setState({ isColorCorrect: false, seconds: 30, isDisabled: false });
+
+    // oldState refere-se aos valores atuais dos estados, passado como parâmetro para atualizar no countQuestions
+    this.setState((oldState) => ({ isColorCorrect: false,
+      seconds: 30,
+      isDisabled: false,
+      countQuestions: oldState.countQuestions + 1 }
+    ));
     this.timerFunction();
   };
 
@@ -91,9 +99,15 @@ class Game extends Component {
 
   render() {
     const { response, nextQuestion, allQuestions } = this.props;
-    const { isColorCorrect, isBtnNext, isDisabled, seconds } = this.state;
+    const { isColorCorrect, isBtnNext, isDisabled, seconds, countQuestions } = this.state;
     const numberSorted = 0.5;
 
+    const numberOfQuestions = 5;
+    if (countQuestions === numberOfQuestions) {
+      return (
+        <Redirect to="/feedback" />
+      );
+    }
     return (
       <div>
         <h1>TRIVIA</h1>
