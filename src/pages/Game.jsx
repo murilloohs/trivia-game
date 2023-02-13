@@ -7,6 +7,7 @@ import {
   dispatchNextQuestion,
   addNextQuestion,
   actionScore,
+  actionAssertions,
 } from '../redux/actions';
 
 import Header from './Header';
@@ -41,8 +42,10 @@ class Game extends Component {
 
   handleDispatch = () => {
     const { dispatch } = this.props;
+    const { rightAnswers } = this.state;
     dispatch(dispatchNextQuestion());
     dispatch(addNextQuestion());
+    dispatch(actionAssertions(rightAnswers));
 
     // oldState refere-se aos valores atuais dos estados, passado como parâmetro para atualizar no countQuestions
     this.setState((oldState) => ({ isColorCorrect: false,
