@@ -1,6 +1,5 @@
 import { ACTION_SCORE, ACTION_ASSERTIONS } from '../actions/actionTypes';
 
-
 const INITIAL_STATE = {
   score: 0,
   assertions: 0,
