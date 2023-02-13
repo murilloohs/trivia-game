@@ -26,12 +26,11 @@ class Game extends Component {
       isDisabled: false,
       rightAnswers: 0,
       countQuestions: 0,
-      
+
       questions: [],
     };
     this.myInterval = 0;
   }
-
 
   componentDidMount() {
     this.getQuestions();
@@ -123,11 +122,15 @@ class Game extends Component {
   };
 
   render() {
-
     const { response, nextQuestion } = this.props;
-    const { isColorCorrect, isBtnNext, isDisabled, seconds, questions, countQuestions } = this.state;
-    
-
+    const {
+      isColorCorrect,
+      isBtnNext,
+      isDisabled,
+      seconds,
+      questions,
+      countQuestions,
+    } = this.state;
 
     const numberOfQuestions = 5;
     if (countQuestions === numberOfQuestions) {
