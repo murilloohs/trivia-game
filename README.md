@@ -6,7 +6,7 @@ The Trivia Game was created in a group and utilizes an external API to provide q
 
 To start playing, users need to log in to the game using an email and a name. The game consists of 5 questions, each with a 30-second time limit for a response. If the player doesn't answer within the stipulated time, they won't receive points for that question.
 
-At the end of the 5 questions, players are redirected to the score screen, where they can view their placement in the local ranking. *It's important to note that due to the use of an external API, there might be occurrences of questions with incorrect formatting.*
+At the end of the 5 questions, players are redirected to the score screen, where they can view their placement in the local ranking. **It's important to note that due to the use of an external API, there might be occurrences of questions with incorrect formatting.**
 
 ![Screenshot](Screenshot.png)
 
