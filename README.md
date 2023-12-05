@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Trivia Game is a group-based game that uses an external API to provide questions and answers. It offers an interactive experience where users can test their knowledge in a fun environment of questions and answers.
+The Trivia Game was created in a group and utilizes an external API to provide questions and answers. It offers an interactive experience where users can test their knowledge in a fun environment of questions and answers.
 
 To start playing, users need to log in to the game using an email and a name. The game consists of 5 questions, each with a 30-second time limit for a response. If the player doesn't answer within the stipulated time, they won't receive points for that question.
 
