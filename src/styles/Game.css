@@ -1,0 +1,130 @@
+.container-game {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.logo-game {
+  align-self: flex-start;
+  height: 30%;
+  margin-left: 20%;
+  width: 20%;
+}
+
+.container-questions-all {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.container-questions {
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  width: 40%;
+}
+
+.category {
+  align-items: center;
+  background-color: red;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  font-size: 1.5em;
+  height: 15%;
+  justify-content: center;
+  width: 100%;
+}
+
+.question {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.2em;
+  height: 50%;
+  justify-content: center;
+  width: 80%;
+}
+
+.container-answer {
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  width: 40%;
+}
+
+.container-answer button {
+  border-radius: 10px;
+  height: 3em;
+  margin-top: 5%;
+  width: 100%;
+}
+
+.seconds {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.spinner {
+  animation: spin 50s linear;
+  animation-duration: 30s;
+  border: 5px solid rgb(27, 12, 83);
+  border-left-color: rgb(36, 175, 134);
+  border-radius: 50%;
+  display: flex;
+  height: 40px;
+  width: 40px;
+}
+
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@media ( max-width : 599px ) {
+
+  .container-questions-all {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .container-questions {
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 70%;
+  }
+
+  .category {
+    align-items: center;
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    font-size: 1.5em;
+    height: 28%;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .logo-game {
+    align-self: center;
+    height: 30%;
+    margin-left: 0;
+    width: 20%;
+  }
+}

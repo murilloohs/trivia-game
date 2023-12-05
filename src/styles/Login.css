@@ -1,0 +1,118 @@
+body {
+  background-color: blue;
+}
+
+.container-login {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100vh;
+  justify-content: center;
+}
+
+.login {
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  height: 40vh;
+  justify-content: center;
+  width: 40vw;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  gap: 7%;
+  height: 100%;
+  justify-content: center;
+  margin: 10%;
+  width: 100%;
+}
+
+.button-login {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #00d775, #00bd68);
+  border: 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter , apple-system , system-ui , Roboto , Helvetica Neue;
+  height: 44px;
+  line-height: 44px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 100%;
+  z-index: 9;
+}
+
+.button-login:hover {
+  background: #00bd68;
+}
+
+.login form input {
+  border: 0.3px solid #bcc2c0;
+  border-radius: 5px;
+  font-size: 1.5em;
+  height: 10%;
+  padding-left: 5%;
+}
+
+.button-config {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #1d7052, #1d7052);
+  border: 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter , apple-system , system-ui , Roboto , Helvetica Neue;
+  height: 44px;
+  line-height: 44px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 100%;
+  z-index: 9;
+}
+
+.button-config:hover {
+  background: rgb(2, 128, 54);
+
+}
+
+.logo-trivia {
+  height: 30%;
+  width: 40%;
+}
+
+
+@media ( max-width : 599px ) {
+
+  .login {
+    width: 80vw;
+  }
+
+  .logo-trivia {
+    width: 50%;
+  }
+}

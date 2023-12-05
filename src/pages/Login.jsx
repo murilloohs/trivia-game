@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchToken from '../service/service';
 import { addNameEmail } from '../redux/actions';
+import logo from '../images/logo.png';
+import '../styles/Login.css';
 
 class Login extends Component {
   state = {
@@ -17,7 +19,6 @@ class Login extends Component {
     const { email, name } = this.state;
 
     localStorage.setItem('token', token);
-    console.log(token);
 
     dispatch(addNameEmail(email, name));
     if (token) return push('/game');
@@ -33,38 +34,46 @@ class Login extends Component {
     const { history } = this.props;
 
     return (
-      <div>
-        <form>
-          <input
-            type="email"
-            data-testid="input-gravatar-email"
-            value={ email }
-            name="email"
-            onChange={ handleChange }
-          />
-          <input
-            type="text"
-            data-testid="input-player-name"
-            value={ name }
-            name="name"
-            onChange={ handleChange }
-          />
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ !(name.length > 0 && email.length > 0) }
-            onClick={ handleClick }
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ () => history.push('/config') }
-          >
-            Configurações
-          </button>
-        </form>
+      <div className="container-login">
+        <img src={ logo } alt="logo" className="logo-trivia" />
+        <div className="login">
+          <form>
+            <input
+              type="email"
+              data-testid="input-gravatar-email"
+              value={ email }
+              name="email"
+              onChange={ handleChange }
+              placeholder="Digite o seu e-mail"
+            />
+            <input
+              type="text"
+              data-testid="input-player-name"
+              value={ name }
+              name="name"
+              onChange={ handleChange }
+              placeholder="Digite o seu nome"
+            />
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ !(name.length > 0 && email.length > 0) }
+              onClick={ handleClick }
+              className="button-login"
+            >
+              Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ () => history.push('/config') }
+              className="button-config"
+            >
+              {'  '}
+              Configurações
+            </button>
+          </form>
+        </div>
       </div>
     );
   }

@@ -11,8 +11,10 @@ import {
   resetScore,
 } from '../redux/actions';
 
-import Header from './Header';
+import Header from '../components/Header';
 import '../App.css';
+import '../styles/Game.css';
+import logo from '../images/logo.png';
 
 const timer = 1000;
 const CORRECT_ANSWER = 'correct-answer';
@@ -27,7 +29,6 @@ class Game extends Component {
       isDisabled: false,
       rightAnswers: 0,
       countQuestions: 0,
-
       questions: [],
     };
     this.myInterval = 0;
@@ -74,10 +75,12 @@ class Game extends Component {
     this.setState((oldState) => ({ isColorCorrect: false,
       seconds: 30,
       isDisabled: false,
+      isBtnNext: false,
       countQuestions: oldState.countQuestions + 1 }
     ));
     this.timerFunction();
     clearInterval(this.myInterval);
+    this.timerFunction();
   };
 
   timerFunction = () => {
@@ -89,8 +92,10 @@ class Game extends Component {
           seconds: prevState.seconds - 1,
         }));
       } else {
+        this.handleColor();
         this.setState({
           isDisabled: true,
+          isBtnNext: true,
         });
         clearInterval(this.myInterval);
         dispatch(actionScore(0));
@@ -102,6 +107,8 @@ class Game extends Component {
     const { dispatch, response } = this.props;
     const { seconds } = this.state;
     this.handleColor();
+    this.setState(() => ({ isDisabled: true }));
+    clearInterval(this.myInterval);
 
     if (target.id === CORRECT_ANSWER) {
       this.setState((prevState) => ({
@@ -109,7 +116,7 @@ class Game extends Component {
       }));
 
       let diff = 0;
-
+      const ten = 10;
       if (response.difficulty === 'easy') {
         diff = 1;
       } else if (response.difficulty === 'medium') {
@@ -118,7 +125,6 @@ class Game extends Component {
         const diffNumber = 3;
         diff = diffNumber;
       }
-      const ten = 10;
       const score = ten + (seconds * diff);
       dispatch(actionScore(score));
     }
@@ -142,26 +148,42 @@ class Game extends Component {
       );
     }
     return (
-      <div>
-        <h1>TRIVIA</h1>
+      <div className="container-game">
         <section>
           <Header />
         </section>
+        <img src={ logo } alt="logo" className="logo-game" />
         {
           response.length > 0
             ? (
-              <div>
-                <p data-testid="question-text">{ response[nextQuestion].question }</p>
-                <p data-testid="question-category">{response[nextQuestion].category}</p>
-                <p>{ seconds }</p>
-                <div>
+              <div className="container-questions-all">
+                <div className="container-questions">
+                  <p
+                    data-testid="question-category"
+                    className="category"
+                  >
+                    {response[nextQuestion].category}
+
+                  </p>
+                  <p
+                    data-testid="question-text"
+                    className="question"
+                  >
+                    { response[nextQuestion].question }
+                  </p>
+
+                  <p className="seconds">
+                    <span className="spinner" />
+                    { seconds }
+                  </p>
+                </div>
+                <div className="container-answer">
                   <div data-testid="answer-options">
                     {questions.map((question, index) => {
                       const verifyColor = response[nextQuestion]
                         .correct_answer === question
                         ? 'correctColor' : 'incorrectColor';
                       return (
-
                         <button
                           onClick={ this.handleClick }
                           id={
@@ -187,6 +209,7 @@ class Game extends Component {
                         <button
                           data-testid="btn-next"
                           onClick={ this.handleDispatch }
+                          className="btn btn-success"
                         >
                           Next
                         </button>
@@ -194,10 +217,9 @@ class Game extends Component {
                     }
                   </div>
                 </div>
-
               </div>
             )
-            : (<p>carregando...</p>)
+            : (<p className="category">carregando...</p>)
         }
       </div>
     );
@@ -225,5 +247,4 @@ Game.propTypes = {
     correct_answer: PropTypes.string.isRequired,
   }).isRequired).isRequired,
 };
-
 export default connect(mapStateToProps)(Game);

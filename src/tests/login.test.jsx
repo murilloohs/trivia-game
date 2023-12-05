@@ -3,7 +3,6 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
-import Login from '../pages/Login';
 
 describe('Cobertura da tela de Login', () => {
     it('Verifica inputs da tela de login', () => {

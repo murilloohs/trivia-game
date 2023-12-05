@@ -1,0 +1,33 @@
+.container-feedback {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30%;
+  height: 100vh;
+}
+
+.container-point {
+  align-items: center;
+  align-self: center;
+  background-color: rgba(150, 154, 155, 0.212);
+  border: 1px solid white;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5em;
+  height: 40%;
+  justify-content: center;
+  width: 40%;
+
+}
+
+.container-point span, p {
+  height: 25%;
+}
+
+.container-point p {
+  color: red;
+  font-size: 110%;
+  font-weight: 700;
+}

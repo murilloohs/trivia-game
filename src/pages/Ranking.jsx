@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import '../styles/Ranking.css';
 
 class Ranking extends Component {
   state = {
@@ -10,7 +11,6 @@ class Ranking extends Component {
   };
 
   componentDidMount() {
-    console.log('oi');
     this.setStorage();
   }
 
@@ -34,34 +34,32 @@ class Ranking extends Component {
   render() {
     const { players } = this.state;
     return (
-      <div>
+      <div className="container-ranking">
         <h1
           data-testid="ranking-title"
         >
           Ranking
         </h1>
-        <div>
+        <div className="container-players">
           {
             players.sort((a, b) => b.score - a.score).map((e, index) => (
-              <div key={ index }>
+              <div key={ index } className="list">
                 <img src={ e.img } alt={ e.name } />
-                <p data-testid={ `player-name-${index}` }>{ e.nome }</p>
-                <p data-testid={ `player-score-${index}` }>{ e.score }</p>
+                <span data-testid={ `player-name-${index}` }>{ e.nome }</span>
+                <span
+                  data-testid={ `player-score-${index}` }
+                >
+                  { `Pontos: ${e.score}` }
+                </span>
               </div>
 
             ))
-            // : players.map((e, index) => (
-            //   <div key={ index }>
-            //     <img src={ e.img } alt={ e.name } />
-            //     <p data-testid={ `player-name-${index}` }>{ e.nome }</p>
-            //     <p data-testid={ `player-score-${index}` }>{ e.score }</p>
-            //   </div>
-            // ))
           }
         </div>
         <Link to="/">
           <button
             data-testid="btn-go-home"
+            className="btn btn-warning mb-2"
           >
             {' '}
             Back to login
